@@ -4,9 +4,10 @@ if [ -z "$APIKEY" ]; then echo "Error: environment variable APIKEY is not set." 
 if [ -z "$FILENAME" ]; then echo "Error: environment variable FILENAME is not set." && exit 1; fi
 if [ -z "$BUCKET" ]; then echo "Error: environment variable BUCKET is not set." && exit 1; fi
 if [ -z "$REGION" ]; then echo "Error: environment variable REGION is not set." && exit 1; fi
+if [[ $FILENAME != *.json.gz ]]; then echo "Error: FILENAME must be a valid .json.gz." && exit 1; fi
 
 apikey=$APIKEY
-inputfilename=$FILENAME
+inputfilename=`echo $FILENAME | rev | cut -c9- | rev`
 bucket=$BUCKET
 targetbucket=$bucket
 region=$REGION
@@ -20,7 +21,7 @@ if [[ -v TARGETBUCKET ]]; then targetbucket=$TARGETBUCKET; fi
 if [[ -v TARGETREGION ]]; then targetregion=$TARGETREGION; fi
 ibmcloud login -r us-south -apikey $apikey
 rm -f $inputfilename.json.gz
-echo Downloading cos://$region/$bucket/$prefix$prefix$inputfilename.json.gz ...
+echo Downloading cos://$region/$bucket/$prefix$inputfilename.json.gz ...
 ibmcloud cos object-get --bucket $bucket --key $prefix$inputfilename.json.gz --region $region ./$inputfilename.json.gz
 echo Splitting file $inputfilename.json.gz into files with $lines lines.
 gunzip -c $inputfilename.json.gz | split -l $lines -a 10
