@@ -8,7 +8,7 @@
  - BUCKET: The COS bucket name of your json.gz file
  - INPUTFILENAME: The name of your json.gz file on COS (when it is in a virtual folder you must specify it as PREFIX variable)
  - PREFIX: The optional prefix name of your json.gz file (optional, default is empty string)
- - LINES: The number of lines in each split file (optional, default is 1000)
+ - LINES: The number of lines in each split file (optional, default is 100000)
  - TARGETREGION: The region of your target split files on COS (optional, default is value iof REGION)
  - TARGETBUCKET: The bucket of your target split files on COS (optional, default is value iof BUCKET)
  - TARGETPREFIX: The prefix of your target split files on COS (optional, default is value iof PREFIX)
