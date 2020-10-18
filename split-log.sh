@@ -1,5 +1,5 @@
 #!/bin/bash
-x
+
 if [ -z "$APIKEY" ]; then echo "Error: environment variable APIKEY is not set." && exit 1; fi
 if [ -z "$FILENAME" ]; then echo "Error: environment variable FILENAME is not set." && exit 1; fi
 if [ -z "$BUCKET" ]; then echo "Error: environment variable BUCKET is not set." && exit 1; fi
