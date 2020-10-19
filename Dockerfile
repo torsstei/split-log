@@ -30,5 +30,6 @@ RUN cd /tmp \
 && ibmcloud plugin install cloud-object-storage
 
 COPY split-log.sh /
+COPY split-log-with-local-storage.sh /
 
 CMD ["/bin/bash", "-c", "/split-log.sh"]
