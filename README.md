@@ -38,7 +38,7 @@ Make sure you have **ibmcloud** CLI installed. If not, refer [here](https://clou
 
 Make sure you have the [Code Engine plugin](https://cloud.ibm.com/codeengine/cli) installed for the CLI.
 
-If you haven't used Code Engine in your account before log in confifure the ibmcloud CLI as described [here](https://cloud.ibm.com/docs/codeengine?topic=codeengine-install-cli) and then create a project:
+If you haven't used Code Engine in your account before log in configure the ibmcloud CLI as described [here](https://cloud.ibm.com/docs/codeengine?topic=codeengine-install-cli) and then create a project:
 ```
 ibmcloud ce project create --name myproject --select
 ```
