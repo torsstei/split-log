@@ -2,6 +2,11 @@
 # split-log Docker Image
 Builds of this image can be found in https://hub.docker.com/repository/docker/torsstei/split-log.
 
+## Building the image
+```
+docker build --tag split-log .
+```
+
 ## Parameters
 
  - ACCESSKEY: Your COS HMAC access key
@@ -26,6 +31,8 @@ docker run -e ACCESSKEY='YNiasfuasdfufWWfsdWDFoOIIOUFEgpQ7qVVTkDSD4De' -e SECRET
 This downloads an object named test.json.gz from bucket `mybucket` in region `us-geo`, splits it into multiple files with each 1000 lines and compresses them with bzip2 and then uploads these to same region and bucket as object names `split/a591844d24.2019-07-17.72.xaaaaa..json.bz`, `split/.a591844d24.2019-07-17.72.xaaaab.json.bz` etc.
 
 ## Running with IBM Cloud Code Engine
+
+You can run the split-log as a serverless job in IBM Cloud Code Engine. For that you need to build it as a docker image and push it to Docker Hub. If you don't want to build and push it yourself you can simply the published image in https://hub.docker.com/repository/docker/torsstei/split-log.
 
 Make sure you have **ibmcloud** CLI installed. If not, refer [here](https://cloud.ibm.com/docs/cli?topic=cli-install-ibmcloud-cli).
 
