@@ -28,7 +28,7 @@ docker build --tag split-log .
 docker run -e ACCESSKEY='YNiasfuasdfufWWfsdWDFoOIIOUFEgpQ7qVVTkDSD4De' -e SECRETKEY='asASfasfasdFasdf4qr22Fsdsdfwert4dssdfwf343fsdfsdghsSDGSDGdsg' -e NUMBER_OF_LINES='100000' -e FILENAME='a591844d24.2019-07-17.72.json.gz' -e BUCKET='results' -e REGION='us-geo' -e TARGETPREFIX='split/' split-log
 ```
 
-This downloads an object named test.json.gz from bucket `mybucket` in region `us-geo`, splits it into multiple files with each 100000 lines and compresses them with bzip2 and then uploads these to same region and bucket as object names `split/a591844d24.2019-07-17.72.xaaaaa..json.bz`, `split/.a591844d24.2019-07-17.72.xaaaab.json.bz` etc.
+This downloads an object named test.json.gz from bucket `mybucket` in region `us-geo`, splits it into multiple files with each 100000 lines and compresses them with bzip2 and then uploads these to same region and bucket as object names `split/a591844d24.2019-07-17.72.xaaaaa.json.bz`, `split/.a591844d24.2019-07-17.72.xaaaab.json.bz` etc.
 
 ## Running with IBM Cloud Code Engine
 
