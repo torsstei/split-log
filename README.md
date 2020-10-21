@@ -23,7 +23,7 @@ docker build --tag split-log .
  - TARGETSECRETKEY: Your COS HMAC secret access key for your target COS bucket (optional, default is same value as SECRETKEY)
  - PRIVATE_ENDPOINTS: When set to a value the access to COS is performed using direct private endpoint of IBM Cloud (default is: not set)
 
-### Getting COS HMAC credentials
+#### Getting COS HMAC credentials
 
 The split-log job uses HMAC credentials to read and write from COS. You provide them to the job using paramters ACCESSKEY and SECRETKEY (and in case the COS target bucket is in a different COS instance also in additional parameters TARGETACCESSKEY and TARGETSECRETKEY).
 
@@ -46,7 +46,7 @@ ibmcloud resource service-key my_creds_with_hmac
 ```
 
 
-## Example of running with plain docker
+## Running with plain docker
 
 ```shell
 docker run -e ACCESSKEY='YNiasfuasdfufWWfsdWDFoOIIOUFEgpQ7qVVTkDSD4De' -e SECRETKEY='asASfasfasdFasdf4qr22Fsdsdfwert4dssdfwf343fsdfsdghsSDGSDGdsg' -e NUMBER_OF_LINES='100000' -e FILENAME='a591844d24.2019-07-17.72.json.gz' -e BUCKET='results' -e REGION='us-geo' -e TARGETPREFIX='split/' split-log
@@ -58,9 +58,13 @@ This downloads an object named test.json.gz from bucket `mybucket` in region `us
 
 You can run the split-log as a serverless job in IBM Cloud Code Engine. For that you need to build it as a docker image and push it to Docker Hub. If you don't want to build and push it yourself you can also use the published image in https://hub.docker.com/repository/docker/torsstei/split-log.
 
+#### CLI Setup
+
 Make sure you have **ibmcloud** CLI installed. If not, refer [here](https://cloud.ibm.com/docs/cli?topic=cli-install-ibmcloud-cli).
 
 Make sure you have the [Code Engine plugin](https://cloud.ibm.com/codeengine/cli) installed for the CLI.
+
+#### Code Engine Setup
 
 If you haven't used Code Engine in your account before log in configure the ibmcloud CLI as described [here](https://cloud.ibm.com/docs/codeengine?topic=codeengine-install-cli) and then create a project:
 ```
@@ -72,6 +76,8 @@ To see logs and status of your Code Engine jobs on the command line the ibmcloud
 ibmcloud ce project current
 ```
 which shows you the environment variable KUBECONFIG that you must set to be able to use kubectl later.
+
+#### Running the Job
 
 Create a job definition for using the split-log docker image:
 ```
