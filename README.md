@@ -28,17 +28,17 @@ docker build --tag split-log .
 docker run -e ACCESSKEY='YNiasfuasdfufWWfsdWDFoOIIOUFEgpQ7qVVTkDSD4De' -e SECRETKEY='asASfasfasdFasdf4qr22Fsdsdfwert4dssdfwf343fsdfsdghsSDGSDGdsg' -e NUMBER_OF_LINES='100000' -e FILENAME='a591844d24.2019-07-17.72.json.gz' -e BUCKET='results' -e REGION='us-geo' -e TARGETPREFIX='split/' split-log
 ```
 
-This downloads an object named test.json.gz from bucket `mybucket` in region `us-geo`, splits it into multiple files with each 1000 lines and compresses them with bzip2 and then uploads these to same region and bucket as object names `split/a591844d24.2019-07-17.72.xaaaaa..json.bz`, `split/.a591844d24.2019-07-17.72.xaaaab.json.bz` etc.
+This downloads an object named test.json.gz from bucket `mybucket` in region `us-geo`, splits it into multiple files with each 100000 lines and compresses them with bzip2 and then uploads these to same region and bucket as object names `split/a591844d24.2019-07-17.72.xaaaaa.json.bz`, `split/.a591844d24.2019-07-17.72.xaaaab.json.bz` etc.
 
 ## Running with IBM Cloud Code Engine
 
-You can run the split-log as a serverless job in IBM Cloud Code Engine. For that you need to build it as a docker image and push it to Docker Hub. If you don't want to build and push it yourself you can simply the published image in https://hub.docker.com/repository/docker/torsstei/split-log.
+You can run the split-log as a serverless job in IBM Cloud Code Engine. For that you need to build it as a docker image and push it to Docker Hub. If you don't want to build and push it yourself you can also use the published image in https://hub.docker.com/repository/docker/torsstei/split-log.
 
 Make sure you have **ibmcloud** CLI installed. If not, refer [here](https://cloud.ibm.com/docs/cli?topic=cli-install-ibmcloud-cli).
 
 Make sure you have the [Code Engine plugin](https://cloud.ibm.com/codeengine/cli) installed for the CLI.
 
-If you haven't used Code Engine in your account before log in confifure the ibmcloud CLI as described [here](https://cloud.ibm.com/docs/codeengine?topic=codeengine-install-cli) and then create a project:
+If you haven't used Code Engine in your account before log in configure the ibmcloud CLI as described [here](https://cloud.ibm.com/docs/codeengine?topic=codeengine-install-cli) and then create a project:
 ```
 ibmcloud ce project create --name myproject --select
 ```
