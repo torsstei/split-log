@@ -2,6 +2,10 @@
 # split-log Docker Image
 Builds of this image can be found in https://hub.docker.com/repository/docker/torsstei/split-log.
 
+This docker image runs a batch job to download large log archives from COS, uncompresses and splits them into files with a customizable number of lines, recompresses them (using a compression codex other than gzip so that the compressed data can be read in parallel by e.g. Spark) and finally uploads them to a COS location of your choice.
+
+The job can run in any docker environment but it is meant to be deployed in IBM Cloud Code Engine to run close to the COS data. Through the support of using private COS endpoints in IBM Cloud this allows you to perform the entire split operation for a 1 GB of compressed log archive in about one minute.
+
 ## Building the image
 ```
 docker build --tag split-log .
@@ -83,7 +87,7 @@ Create a job definition for using the split-log docker image:
 ```
 ibmcloud ce job create --name my-split-log-job --image docker.io/torsstei/split-log:latest -e ACCESSKEY='YNiasfuasdfufWWfsdWDFoOIIOUFEgpQ7qVVTkDSD4De' -e SECRETKEY='asASfasfasdFasdf4qr22Fsdsdfwert4dssdfwf343fsdfsdghsSDGSDGdsg' -e NUMBER_OF_LINES='100000' -e FILENAME='a591844d24.2019-07-17.72.json.gz' -e BUCKET='results' -e REGION='us-geo' -e TARGETPREFIX='split/' -e PRIVATE_ENDPOINTS='true'
 ```
-Note that we set environment parameter PRIVATE_ENDPOINTS because we want to use private IBM Cloud endpoints when reading and writing COS while running inside IBM Cloud Code Engine.
+Note that we set environment parameter PRIVATE_ENDPOINTS because we want to use private IBM Cloud endpoints when reading and writing COS while running inside IBM Cloud Code Engine. This allows to achieve machimum I/O performance, resulting in splitting a 1 GB log archive in about one minute.
 
 Submit the job:
 ```
