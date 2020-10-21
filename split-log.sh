@@ -1,4 +1,5 @@
 #!/bin/bash
+set -eo pipefail
 
 echo Running split-log for json.gz log archive into multiple json.bz2...
 
@@ -8,6 +9,7 @@ if [ -z "$FILENAME" ]; then echo "Error: environment variable FILENAME is not se
 if [ -z "$BUCKET" ]; then echo "Error: environment variable BUCKET is not set." && exit 1; fi
 if [ -z "$REGION" ]; then echo "Error: environment variable REGION is not set." && exit 1; fi
 if [[ $FILENAME != *.json.gz ]]; then echo "Error: FILENAME must be a valid .json.gz." && exit 1; fi
+if [ -n "$PRIVATE_ENDPOINTS" ]; then endpoint_prefix="direct."; echo "Using private COS endpoints"; fi
 
 accesskey=$ACCESSKEY
 secretkey=$SECRETKEY
@@ -29,8 +31,10 @@ if [[ -v TARGETREGION ]]; then targetregion=$TARGETREGION; fi
 if [ $targetregion == 'us-geo' ]; then targetregion='us'; fi
 if [[ -v TARGETACCESSKEY ]]; then targetaccesskey=$TARGETACCESSKEY; fi
 if [[ -v TARGETSECRETKEY ]]; then targetsecretkey=$TARGETSECRETKEY; fi
-inputendpoint='https://s3.'$region'.cloud-object-storage.appdomain.cloud'
-outputendpoint='https://s3.'$targetregion'.cloud-object-storage.appdomain.cloud'
+inputendpoint='https://s3.'$endpoint_prefix$region'.cloud-object-storage.appdomain.cloud'
+outputendpoint='https://s3.'$endpoint_prefix$targetregion'.cloud-object-storage.appdomain.cloud'
+
+echo 'COS input endpoint is '$inputendpoint'. COS output endoint is '$outputendpoint'.'
 
 mc config host add cos-input $inputendpoint $accesskey $secretkey
 mc config host add cos-output $outputendpoint $targetaccesskey $targetsecretkey
@@ -40,6 +44,7 @@ echo Downloading cos://$region/$bucket/$prefix$inputfilename.json.gz, splitting 
 mc cat cos-input/$bucket/$prefix$inputfilename.json.gz | \
 gunzip | \
 split -l $lines -a 5 --filter '\
+set -e \
 bzip2 | \
 mc pipe cos-output/'$targetbucket'/'$targetprefix$inputfilename'.$FILE.json.bz2; \
 echo Uploaded cos://'$targetregion'/'$targetbucket'/'$targetprefix$inputfilename'.$FILE.json.bz2'
