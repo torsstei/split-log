@@ -21,6 +21,7 @@ docker build --tag split-log .
  - TARGETPREFIX: The prefix of your target split files on COS (optional, default is same value as PREFIX)
  - TARGETACCESSKEY: Your COS HMAC access key for your target COS bucket (optional, default is same value as ACCESSKEY)
  - TARGETSECRETKEY: Your COS HMAC secret access key for your target COS bucket (optional, default is same value as SECRETKEY)
+ - PRIVATE_ENDPOINTS: When set to a value the access to COS is performed using direct private endpoint of IBM Cloud (default is: not set)
 
 ## Example of running with plain docker
 
@@ -51,8 +52,9 @@ which shows you the environment variable KUBECONFIG that you must set to be able
 
 Create a job definition for using the split-log docker image:
 ```
-ibmcloud ce job create --name my-split-log-job --image docker.io/torsstei/split-log:latest -e ACCESSKEY='YNiasfuasdfufWWfsdWDFoOIIOUFEgpQ7qVVTkDSD4De' -e SECRETKEY='asASfasfasdFasdf4qr22Fsdsdfwert4dssdfwf343fsdfsdghsSDGSDGdsg' -e NUMBER_OF_LINES='100000' -e FILENAME='a591844d24.2019-07-17.72.json.gz' -e BUCKET='results' -e REGION='us-geo' -e TARGETPREFIX='split/'
+ibmcloud ce job create --name my-split-log-job --image docker.io/torsstei/split-log:latest -e ACCESSKEY='YNiasfuasdfufWWfsdWDFoOIIOUFEgpQ7qVVTkDSD4De' -e SECRETKEY='asASfasfasdFasdf4qr22Fsdsdfwert4dssdfwf343fsdfsdghsSDGSDGdsg' -e NUMBER_OF_LINES='100000' -e FILENAME='a591844d24.2019-07-17.72.json.gz' -e BUCKET='results' -e REGION='us-geo' -e TARGETPREFIX='split/' -e PRIVATE_ENDPOINTS='true'
 ```
+Note that we set environment parameter PRIVATE_ENDPOINTS because we want to use private IBM Cloud endpoints when reading and writing COS while running inside IBM Cloud Code Engine.
 
 Submit the job:
 ```
