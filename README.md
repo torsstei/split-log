@@ -23,6 +23,29 @@ docker build --tag split-log .
  - TARGETSECRETKEY: Your COS HMAC secret access key for your target COS bucket (optional, default is same value as SECRETKEY)
  - PRIVATE_ENDPOINTS: When set to a value the access to COS is performed using direct private endpoint of IBM Cloud (default is: not set)
 
+### Getting COS HMAC credentials
+
+The split-log job uses HMAC credentials to read and write from COS. You provide them to the job using paramters ACCESSKEY and SECRETKEY (and in case the COS target bucket is in a different COS instance also in additional parameters TARGETACCESSKEY and TARGETSECRETKEY).
+
+If you don't have such credentials created for your COS instance(s) the following shows how you can do that.
+
+Identify the instance name of your COS instance:
+```
+ibmcloud resource service-instances --long | grep cloud-object-storage
+```
+
+Create new credentials for your COS instance, incljuding HMAC credentials:
+```
+ibmcloud resource service-key-create my_creds_with_hmac Writer --instance-name "<the name of your COS instance>" --parameters '{"HMAC":true}'
+```
+In the command output you can see the `access_key_id` and `secret_access_key` values.
+
+You can at any later point retrieve the credentials again using:
+```
+ibmcloud resource service-key my_creds_with_hmac
+```
+
+
 ## Example of running with plain docker
 
 ```shell
