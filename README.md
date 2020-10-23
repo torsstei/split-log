@@ -4,7 +4,7 @@ Builds of this image can be found in https://hub.docker.com/repository/docker/to
 
 This docker image runs a batch job to download large log archives from COS, uncompresses and splits them into files with a customizable number of lines, recompresses them (using a compression codex other than gzip so that the compressed data can be read in parallel by e.g. Spark) and finally uploads them to a COS location of your choice.
 
-The job can run in any docker environment but it is meant to be deployed in IBM Cloud Code Engine to run close to the COS data. Through the support of using private COS endpoints in IBM Cloud this allows you to perform the entire split operation for a 1 GB of compressed log archive in about one minute.
+The job can run in any docker environment but it is meant to be deployed in [IBM Cloud Code Engine](https://www.ibm.com/cloud/blog/announcements/ibm-cloud-code-engine?_ga=2.63441191.966808581.1603006777-504646121.1603006777) to run close to the COS data. Through the support of using private COS endpoints in IBM Cloud this allows you to perform the entire split operation for a 1 GB of compressed log archive in about one minute.
 
 ## Building the image
 ```
@@ -70,7 +70,14 @@ Make sure you have the [Code Engine plugin](https://cloud.ibm.com/codeengine/cli
 
 #### Code Engine Setup
 
-If you haven't used Code Engine in your account before log in configure the ibmcloud CLI as described [here](https://cloud.ibm.com/docs/codeengine?topic=codeengine-install-cli) and then create a project:
+If you haven't used Code Engine in your account before log in configure the ibmcloud CLI as described [here](https://cloud.ibm.com/docs/codeengine?topic=codeengine-install-cli).
+
+Make sure you are working in the region where also your COS bucket data is located. This is not mandatory, but it is important to achieve best performance for the log-split job. Setting region us-south can be achieved like this:
+```
+ibmcloud target -r us-south
+```
+
+Now create a Code Engine project:
 ```
 ibmcloud ce project create --name myproject --select
 ```
