@@ -82,12 +82,6 @@ Now create a Code Engine project:
 ibmcloud ce project create --name myproject --select
 ```
 
-To see logs and status of your Code Engine jobs on the command line the ibmcloud CLI did also install the kubectl tool. Run the following:
-```
-ibmcloud ce project current
-```
-which shows you the environment variable KUBECONFIG that you must set to be able to use kubectl later.
-
 #### Running the Job
 
 Create a job definition for using the split-log docker image:
@@ -110,25 +104,34 @@ This tells you the pod name in Code Engine that runs your job (`my-split-log-job
 
 Check the status of the pod:
 ```
-kubectl describe pod my-split-log-job-jobrun-prkks
+ibmcloud ce jobrun get --name my-split-log-job-jobrun-prkks
 ```
 At the end of the output you can see the pod execution events like this:
 ```
-Events:
-  Type    Reason     Age        From                  Message
-  ----    ------     ----       ----                  -------
-  Normal  Scheduled  <unknown>  default-scheduler     Successfully assigned 3307050b-2834/my-split-log-job-jobrun-prkks-0-0 to 10.240.0.78
-  Normal  Pulling    2m23s      kubelet, 10.240.0.78  Pulling image "docker.io/torsstei/split-log:latest"
-  Normal  Pulled     2m12s      kubelet, 10.240.0.78  Successfully pulled image "docker.io/torsstei/split-log:latest"
-  Normal  Created    2m8s       kubelet, 10.240.0.78  Created container my-split-log-job
-  Normal  Started    2m7s       kubelet, 10.240.0.78  Started container my-split-log-job
+Instances:    
+  Name                               Running  Status     Restarts  Age  
+  my-split-log-job-jobrun-prkks-0-0  0/1      Succeeded  0         3d21h  
 ```
-In that output you find the pod execution id (in this case `my-split-log-job-jobrun-prkks-0-0`).
+In that output you find the pod instance name (in this case `my-split-log-job-jobrun-prkks-0-0`).
 
+Get the logs of the pod instance:
+```
+ibmcloud ce jobrun logs --instance my-split-log-job-jobrun-prkks-0-0
+```
 
-Get the logs of the pod execution:
+##### Optional
+
+In case you want to get more detailed information about the pods it might be useful to use `kubectl` command. You do this by first setting up the kubecfg for your code engine project:
+```
+ibmcloud ce project select --name myproject --kubecfg
+```
+
+Now you could for instance get the details of a pod with:
+```
+kubectl describe pod my-split-log-job-jobrun-prkks
+```
+
+Or you could get the logs for a pod instance with:
 ```
 kubectl logs my-split-log-job-jobrun-prkks-0-0
 ```
-
-
