@@ -44,7 +44,7 @@ echo Downloading cos://$region/$bucket/$prefix$inputfilename.json.gz, splitting 
 mc cat cos-input/$bucket/$prefix$inputfilename.json.gz | \
 gunzip | \
 split -l $lines -a 5 --filter '\
-set -e \
+set -e; \
 bzip2 | \
 mc pipe cos-output/'$targetbucket'/'$targetprefix$inputfilename'.$FILE.json.bz2; \
 echo Uploaded cos://'$targetregion'/'$targetbucket'/'$targetprefix$inputfilename'.$FILE.json.bz2'
