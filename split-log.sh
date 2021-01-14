@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eo pipefail
 
-echo Running split-log for json.gz log archive into multiple json.bz2...
+echo Running split-log for json.gz log archive into multiple json.gz...
 
 if [ -z "$ACCESSKEY" ]; then echo "Error: environment variable ACCESSKEY is not set." && exit 1; fi
 if [ -z "$SECRETKEY" ]; then echo "Error: environment variable SECRETKEY is not set." && exit 1; fi
