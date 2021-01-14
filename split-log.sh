@@ -45,9 +45,9 @@ mc cat cos-input/$bucket/$prefix$inputfilename.json.gz | \
 gunzip | \
 split -l $lines -a 5 --filter '\
 set -e; \
-bzip2 | \
-mc pipe cos-output/'$targetbucket'/'$targetprefix$inputfilename'.$FILE.json.bz2; \
-echo Uploaded cos://'$targetregion'/'$targetbucket'/'$targetprefix$inputfilename'.$FILE.json.bz2'
+gzip | \
+mc pipe cos-output/'$targetbucket'/'$targetprefix$inputfilename'.$FILE.json.gz; \
+echo Uploaded cos://'$targetregion'/'$targetbucket'/'$targetprefix$inputfilename'.$FILE.json.gz'
 
 echo 'Split successfully completed'
 
